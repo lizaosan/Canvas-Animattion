@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="x"></div>
+    <canvas id="pokeball"></canvas>       
+
+    <script>
+
+        // 前置設定
+    
+        var canvas = document.getElementById("pokeball"); // 抓 cancas 的標籤
+        var ctx = canvas.getContext("2d"); // 指定繪圖方式為 2d
+        canvas.height = "200"; // 畫布高等同視窗
+        canvas.width = "200"; // 畫布寬等同視窗
+    
+        // 開始繪製
+        var baseRadian = 0;
+        var int = self.setInterval( function() {
+            
+            // 防止图形飞走，所以先把当前坐标轴的状态保存起来
+            ctx.save();
+            // 平移到矩形的中心
+            ctx.translate(100 , 100);
+            // 旋转坐标系
+            ctx.rotate( baseRadian += Math.PI / 180 * 4 );
+            // 绘制图形
+            ctx.beginPath()
+            //沿用寬度及色彩設定
+            ctx.lineWidth = 5;
+            ctx.strokeStyle = "#272727"
+            ctx.fillStyle = "#FF0000"
+            /* 使用arc(x,y,r,s,e)畫一個圓
+            x,y是圓心的座標，r是半徑，s和e是起點和終點的角度
+            ctx.arc(0,0,25,0,Math.PI*2) 完整的圓
+            ctx.arc(0,0,50,Math.PI,Math.PI*2) 上半圓 */
+
+            /* 上半紅圓 */
+            ctx.beginPath()
+            ctx.fillStyle = "#FF0000"
+            ctx.arc(0,0,50,Math.PI,Math.PI*2); // 上半圓
+            ctx.fill();
+            ctx.stroke();
+
+            /* 下半白圓 */
+            ctx.beginPath()
+            ctx.fillStyle = "#FFFFFF"
+            ctx.arc(0,0,50,Math.PI*2,Math.PI); // 下半圓
+            ctx.fill();
+            ctx.stroke();
+
+            /* 中間黑線 */
+            ctx.beginPath(); //在繪製任何東西之前，我們都要來個開始，像全天下所有的故事一樣
+            ctx.lineWidth = 7;
+            ctx.moveTo(-50,0) //我們用moveTo(x,y)來指定線的起點座標
+            ctx.lineTo(50,0) //之後使用lineTo(x,y)來指定與前一個座標相連的點
+            ctx.stroke() //用stroke()來繪製相連點的線
+
+            /* 中間白球01 */
+            ctx.beginPath()
+            ctx.fillstyle = "FFFFFF"
+            ctx.lineWidth = 4;
+            ctx.arc(0,0,18,0,Math.PI*2);
+            ctx.fill();
+            ctx.stroke();
+
+            /* 中間白球02 */
+            ctx.beginPath()
+            ctx.fillstyle = "FFFFFF"
+            ctx.lineWidth = 3;
+            ctx.arc(0,0,10,0,Math.PI*2);
+            ctx.fill();
+            ctx.stroke();
+
+            // 平移旋转之后，回滚到最初的坐标轴状态
+            ctx.restore();
+        
+            canvas.addEventListener('click', mouseClickHandler, false); // 點擊偵聽
+        
+        }, 15 );
+
+    // canvas.addEventListener('click', function(e) {
+	//     console.log("You click the canvas!");
+    // });
+
+    function mouseClickHandler(event) {
+        console.log("You click the canvas!");
+        int = window.clearInterval(int) // 停止動畫
+        var c = document.getElementById("pokeball");  
+        var cxt = c.getContext("2d");  
+        c.height = c.height;  // 清空畫布
+        var img = document.createElement("img");
+        img.src = "images/poisonFang.png";
+        canvas.removeEventListener('click', mouseClickHandler, false); // 移除監聽，只會產生一次毒牙
+        var src = document.getElementById("x");
+        src.appendChild(img);
+};
+    
+    </script>
+</body>
+
+<style>
+
+    body {
+    background-color: #a68adb;
+    }   
+
+    canvas {
+    position:absolute;
+    top: calc(50% - 5.5em);
+    left: calc(50% - 7em);;}
+
+    div{
+        position:absolute;
+        top: calc(50% - 2.5em);
+        left: calc(50% - 5em);
+      }
+
+</style>
+
+</html>
